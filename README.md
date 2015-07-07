@@ -83,7 +83,7 @@ Once configured, compilation is easy:
 
     $ make
     make  all-recursive
-    make[1]: entrant dans le répertoire " /home/joebar/build/libuhuru "
+    make[1]: entrant dans le répertoire " /home/joebar/build/modules/clamav "
     ...
 
 
