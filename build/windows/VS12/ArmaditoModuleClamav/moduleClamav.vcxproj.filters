@@ -18,7 +18,7 @@
     <ClCompile Include="..\..\..\..\src\clamav.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\os\linux\osdeps.c">
+    <ClCompile Include="..\..\..\..\src\os\windows\osdeps.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

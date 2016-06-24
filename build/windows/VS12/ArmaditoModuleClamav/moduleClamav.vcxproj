@@ -20,7 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\src\clamav.c" />
-    <ClCompile Include="..\..\..\..\src\os\linux\osdeps.c" />
+    <ClCompile Include="..\..\..\..\src\os\windows\osdeps.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\src\os\osdeps.h" />
