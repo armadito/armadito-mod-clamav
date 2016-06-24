@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <ModuleRoot>$(SolutionDir)..\..\..\..\</ModuleRoot>
+    <A6oMdkRoot>$(ModuleRoot)..\armadito-av\build\windows\VS12\</A6oMdkRoot>
+    <A6oMdkInclude>$(A6oMdkRoot)include</A6oMdkInclude>
+    <A6oMdkLib>libarmadito.lib</A6oMdkLib>
+    <A6oMdkLibDir>$(A6oMdkRoot)lib\$(Platform)\$(Configuration)</A6oMdkLibDir>
+    <ModuleAdditionalIncludeDirs>$(ModuleRoot)build\windows\deps\libclamav\$(Platform)\$(Configuration)\include;$(ModuleRoot)build\windows\deps\openssl\$(Platform)\$(Configuration)\include</ModuleAdditionalIncludeDirs>
+    <ModuleAdditionalLibDirs>$(ModuleRoot)build\windows\deps\libclamav\$(Platform)\$(Configuration)\lib</ModuleAdditionalLibDirs>
+    <ModuleAdditionalLibs>libclamav.lib</ModuleAdditionalLibs>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemDefinitionGroup />
+  <ItemGroup>
+    <BuildMacro Include="ModuleRoot">
+      <Value>$(ModuleRoot)</Value>
+    </BuildMacro>
+    <BuildMacro Include="A6oMdkRoot">
+      <Value>$(A6oMdkRoot)</Value>
+    </BuildMacro>
+    <BuildMacro Include="A6oMdkInclude">
+      <Value>$(A6oMdkInclude)</Value>
+    </BuildMacro>
+    <BuildMacro Include="A6oMdkLib">
+      <Value>$(A6oMdkLib)</Value>
+    </BuildMacro>
+    <BuildMacro Include="A6oMdkLibDir">
+      <Value>$(A6oMdkLibDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ModuleAdditionalIncludeDirs">
+      <Value>$(ModuleAdditionalIncludeDirs)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ModuleAdditionalLibDirs">
+      <Value>$(ModuleAdditionalLibDirs)</Value>
+    </BuildMacro>
+    <BuildMacro Include="ModuleAdditionalLibs">
+      <Value>$(ModuleAdditionalLibs)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

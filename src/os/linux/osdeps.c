@@ -21,6 +21,7 @@ along with Armadito module clamav.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "../osdeps.h"
 #include <libarmadito.h>
+#include <stdlib.h>
 
 #define MAX_PATH 260
 
