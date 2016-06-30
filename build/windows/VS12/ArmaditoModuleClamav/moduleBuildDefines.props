@@ -2,20 +2,30 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
-    <ModuleRoot>$(SolutionDir)..\..\..\..\</ModuleRoot>
-    <A6oMdkRoot>$(ModuleRoot)..\armadito-av\build\windows\VS12\</A6oMdkRoot>
+    <A6oModuleRoot>$(SolutionDir)..\..\..\..\</A6oModuleRoot>
+    <A6oOut>$(A6oModuleRoot)..\OUT\$(Platform)\$(Configuration)\</A6oOut>
+    <A6oMdkRoot>$(A6oOut)</A6oMdkRoot>
     <A6oMdkInclude>$(A6oMdkRoot)include</A6oMdkInclude>
-    <A6oMdkLib>libarmadito.lib</A6oMdkLib>
-    <A6oMdkLibDir>$(A6oMdkRoot)lib\$(Platform)\$(Configuration)</A6oMdkLibDir>
-    <ModuleAdditionalIncludeDirs>$(ModuleRoot)build\windows\deps\libclamav\$(Platform)\$(Configuration)\include;$(ModuleRoot)build\windows\deps\openssl\$(Platform)\$(Configuration)\include</ModuleAdditionalIncludeDirs>
-    <ModuleAdditionalLibDirs>$(ModuleRoot)build\windows\deps\libclamav\$(Platform)\$(Configuration)\lib</ModuleAdditionalLibDirs>
-    <ModuleAdditionalLibs>libclamav.lib</ModuleAdditionalLibs>
+    <A6oMdkLib>$(A6oMdkRoot)</A6oMdkLib>
+    <A6oMdkLibraries>Armadito.lib</A6oMdkLibraries>
+    <LibclamavRoot>$(SolutionDir)..\..\deps\libclamav\$(Platform)\$(Configuration)\</LibclamavRoot>
+    <LibclamavInclude>$(LibclamavRoot)include</LibclamavInclude>
+    <LibclamavLib>$(LibclamavRoot)lib\</LibclamavLib>
+    <OpensslRoot>$(SolutionDir)..\..\deps\openssl\$(Platform)\$(Configuration)\</OpensslRoot>
+    <OpensslInclude>$(OpensslRoot)include</OpensslInclude>
+    <OpensslLib>$(OpensslRoot)lib\</OpensslLib>
+    <A6oModuleAdditionalInclude>$(LibclamavInclude);$(OpensslInclude)</A6oModuleAdditionalInclude>
+    <A6oModuleAdditionalLib>$(LibclamavLib)</A6oModuleAdditionalLib>
+    <A6oModuleAdditionalLibraries>libclamav.lib</A6oModuleAdditionalLibraries>
   </PropertyGroup>
   <PropertyGroup />
   <ItemDefinitionGroup />
   <ItemGroup>
-    <BuildMacro Include="ModuleRoot">
-      <Value>$(ModuleRoot)</Value>
+    <BuildMacro Include="A6oModuleRoot">
+      <Value>$(A6oModuleRoot)</Value>
+    </BuildMacro>
+    <BuildMacro Include="A6oOut">
+      <Value>$(A6oOut)</Value>
     </BuildMacro>
     <BuildMacro Include="A6oMdkRoot">
       <Value>$(A6oMdkRoot)</Value>
@@ -26,17 +36,35 @@
     <BuildMacro Include="A6oMdkLib">
       <Value>$(A6oMdkLib)</Value>
     </BuildMacro>
-    <BuildMacro Include="A6oMdkLibDir">
-      <Value>$(A6oMdkLibDir)</Value>
+    <BuildMacro Include="A6oMdkLibraries">
+      <Value>$(A6oMdkLibraries)</Value>
     </BuildMacro>
-    <BuildMacro Include="ModuleAdditionalIncludeDirs">
-      <Value>$(ModuleAdditionalIncludeDirs)</Value>
+    <BuildMacro Include="LibclamavRoot">
+      <Value>$(LibclamavRoot)</Value>
     </BuildMacro>
-    <BuildMacro Include="ModuleAdditionalLibDirs">
-      <Value>$(ModuleAdditionalLibDirs)</Value>
+    <BuildMacro Include="LibclamavInclude">
+      <Value>$(LibclamavInclude)</Value>
     </BuildMacro>
-    <BuildMacro Include="ModuleAdditionalLibs">
-      <Value>$(ModuleAdditionalLibs)</Value>
+    <BuildMacro Include="LibclamavLib">
+      <Value>$(LibclamavLib)</Value>
+    </BuildMacro>
+    <BuildMacro Include="OpensslRoot">
+      <Value>$(OpensslRoot)</Value>
+    </BuildMacro>
+    <BuildMacro Include="OpensslInclude">
+      <Value>$(OpensslInclude)</Value>
+    </BuildMacro>
+    <BuildMacro Include="OpensslLib">
+      <Value>$(OpensslLib)</Value>
+    </BuildMacro>
+    <BuildMacro Include="A6oModuleAdditionalInclude">
+      <Value>$(A6oModuleAdditionalInclude)</Value>
+    </BuildMacro>
+    <BuildMacro Include="A6oModuleAdditionalLib">
+      <Value>$(A6oModuleAdditionalLib)</Value>
+    </BuildMacro>
+    <BuildMacro Include="A6oModuleAdditionalLibraries">
+      <Value>$(A6oModuleAdditionalLibraries)</Value>
     </BuildMacro>
   </ItemGroup>
 </Project>
