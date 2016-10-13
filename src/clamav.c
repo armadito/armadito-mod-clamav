@@ -292,7 +292,7 @@ static enum a6o_update_status clamav_info(struct a6o_module *module, struct a6o_
 
 	n = sizeof(dbnames) / sizeof(const char *);
 
-	info->base_infos = calloc(n + 1, sizeof(struct a6o_base_info));
+	info->base_infos = calloc(n + 1, sizeof(struct a6o_base_info*));
 
 	base_info_count = 0;
 	for (i = 0; i < n; i++) {
