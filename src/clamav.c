@@ -62,6 +62,7 @@ static enum a6o_mod_status clamav_init(struct a6o_module *module)
 	cl_data->clamav_engine = cl_engine_new();
 	if(!cl_data->clamav_engine) {
 		a6o_log(ARMADITO_LOG_MODULE, ARMADITO_LOG_LEVEL_ERROR, "ClamAV: can't create new engine");
+		free(cl_data);
 		return ARMADITO_MOD_INIT_ERROR;
 	}
 
