@@ -1,6 +1,10 @@
 Armadito ClamAV module
 ======================
 [![Build Status](https://travis-ci.org/armadito/armadito-mod-clamav.svg?branch=DEV)](https://travis-ci.org/armadito/armadito-mod-clamav)
+<a href="https://scan.coverity.com/projects/armadito-armadito-mod-clamav">
+  <img alt="Coverity Scan Build Status"
+       src="https://scan.coverity.com/projects/10495/badge.svg"/>
+</a>
 
 Armadito ClamAV module corresponds to the integration of libclamav library within Armadito-av.
 
