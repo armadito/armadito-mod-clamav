@@ -1,7 +1,6 @@
 language: C
 sudo: required
 dist: trusty
-
 addons:
   apt:
     packages:
@@ -15,35 +14,39 @@ addons:
     - libclamav-dev
   coverity_scan:
     project:
-      name: "armadito/armadito-mod-clamav"
-      description: "Build submitted via Travis CI"
+      name: armadito/armadito-mod-clamav
+      description: Build submitted via Travis CI
     notification_email: vhamon@teclib.com
-    build_command_prepend: "./configure PKG_CONFIG_PATH=/home/travis/build/armadito-core/lib/pkgconfig; make clean"
-    build_command:   "make -j 4"
+    build_command_prepend: "./configure PKG_CONFIG_PATH=/home/travis/build/armadito-core/lib/pkgconfig;
+      make clean"
+    build_command: make -j 4
     branch_pattern: coverity_scan
+  sonarqube: true
 
 env:
   global:
-   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
-   #   via the "travis encrypt" command using the project repo's public key
-   - secure: "I1b2v9Yd29P3RnHXqOWOqc4XBJgjZ2yEd4OvUGfG+Xqc3Zz3Ldbww9jdR9z4HD7GulS9SZODOBgFuwjcZlZxnaZXpzlsUmay1HPs1BLvlgVSC+1qlfrPNSLFofBM/6/oNNM88p7ULWfYxa+vF0MBVzIoQkb2pARXnV27hG8YlZ4TqqwZdbjALJuqaaryQJhCmrqQTBXHXHyt3UlAspV4zDZZMc5Fcpd/7ZO8f8AS7saklBfBDAelKD6MJfm5T772kT+m3BmhOGafDCVzpOuC4/c2UIVLUJUvvIP6aLuAmZFIfCYE2GrdGRU7AK1mqAgwAf8IQAzOvSpMMS6OKCbqXB1JDTZjuxZkegmbnhdWaAiq/mxZnmPrxfxTg2mo4esgyC9eWOf4CR+I/YLJvkqpq9glrN0AZTvOW2uoYkQ5tHggqvjDOC+54zmJwZI5W4/rs5LrKvDoTIuYRzwlmlLcq4e9Hc/6yhK8X6MeDJZ1Q8pe2XDp6XCTR42UXg57MDKyZv9Qz2duKfJTAQvZWMULtjZ7KdG1qAZUfi/vpsci6bWWEz4oZ+v7dafVqY5YMSGD7mA+hm9WSVdjMeJjlBsVMiUg36q5xz4yMw3NQQkmxBjZtw5I/0Amie39HbFOnJyIMu4zKYgfZW+pZ9EE6+AkcQxX+vyLZHXEdKFyYgr1hp4="
+  - secure: I1b2v9Yd29P3RnHXqOWOqc4XBJgjZ2yEd4OvUGfG+Xqc3Zz3Ldbww9jdR9z4HD7GulS9SZODOBgFuwjcZlZxnaZXpzlsUmay1HPs1BLvlgVSC+1qlfrPNSLFofBM/6/oNNM88p7ULWfYxa+vF0MBVzIoQkb2pARXnV27hG8YlZ4TqqwZdbjALJuqaaryQJhCmrqQTBXHXHyt3UlAspV4zDZZMc5Fcpd/7ZO8f8AS7saklBfBDAelKD6MJfm5T772kT+m3BmhOGafDCVzpOuC4/c2UIVLUJUvvIP6aLuAmZFIfCYE2GrdGRU7AK1mqAgwAf8IQAzOvSpMMS6OKCbqXB1JDTZjuxZkegmbnhdWaAiq/mxZnmPrxfxTg2mo4esgyC9eWOf4CR+I/YLJvkqpq9glrN0AZTvOW2uoYkQ5tHggqvjDOC+54zmJwZI5W4/rs5LrKvDoTIuYRzwlmlLcq4e9Hc/6yhK8X6MeDJZ1Q8pe2XDp6XCTR42UXg57MDKyZv9Qz2duKfJTAQvZWMULtjZ7KdG1qAZUfi/vpsci6bWWEz4oZ+v7dafVqY5YMSGD7mA+hm9WSVdjMeJjlBsVMiUg36q5xz4yMw3NQQkmxBjZtw5I/0Amie39HbFOnJyIMu4zKYgfZW+pZ9EE6+AkcQxX+vyLZHXEdKFyYgr1hp4=
+  - secure: fXkFOV8pnuZjrxcOtTspXpoiMh5gyTyo4cjpfBn5FIkNbuMd/m58cm5ukJjSlSRxmqdYlqaFd3z4reLlQE1Djk/MTHfAhhsO5CGZXfTyNUSPVrwxucSSCwk6YrNRfN8xEP9ZVIph+KcLkDITII7BGLQd4TQxSUPcQ836uNiEd8Bdyo141brCkEk4Q9Z3DxaZgWEgutyzi8as+jXYwdstn8tE403cp0u04lIIfAQPUoz1/mHZ6B1rL9K7YO9GPInnHh6/+Tn7NG02iDQZQTbkZotzHdz5BK3IzCSxHTWnuaGp8REGB9m1fCpFs0iCAHJGR0lF26vytzcOTwRn+J3fiIGTZI4sFfL/xchjUOB8udS8ViQuslXzXigE1xsqIZPqeg+Sytcro4HiM/UlynxtHaDmmsoqT3Q/D2PPX+KDE2lCg30TfSspy338laZOzm5qGpBp+0huekYDYGD26QY7Zi0agkiW21RrpZqKmJyd0pjwNwIvRdkcQhRinknVO/sEk974l1fH1BX1ZI0XgjSj65opknpgsGRtNjjJ9P4VzRPD0Ypx8jGXMyGYKq/4C06H5tgwFPFJvPfJLEWR4ampQxW19cZNLGiFJPprQVwy7DRrsr/fiIEop5pKZStKGEfSNxWLhfXIWPD+ZJXr2eBp1WhukdT4Rz8FnRlPK8tmnQU=
 
 before_install:
-  - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+- echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END
+  CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
 
 compiler:
-  - gcc
+- gcc
 
 before_script:
-  - git clone git://github.com/armadito/armadito-av -b DEV
-  - cd armadito-av/
-  - ./autogen.sh
-  - mkdir -p /home/travis/build/armadito-core
-  - ./configure --prefix=/home/travis/build/armadito-core
-  - make
-  - make install
-  - cd /home/travis/build/armadito/armadito-mod-clamav
-  - ./autogen.sh
+- git clone git://github.com/armadito/armadito-av -b DEV
+- cd armadito-av/
+- "./autogen.sh"
+- mkdir -p /home/travis/build/armadito-core
+- "./configure --prefix=/home/travis/build/armadito-core"
+- make
+- make install
+- cd /home/travis/build/armadito/armadito-mod-clamav
+- "./autogen.sh"
 
 script:
-  ./configure PKG_CONFIG_PATH=/home/travis/build/armadito-core/lib/pkgconfig && make clean && make && make check
+- "./configure PKG_CONFIG_PATH=/home/travis/build/armadito-core/lib/pkgconfig"
+- make clean all
+- sonar-scanner -e -X -Dsonar.host.url=https://sonarqube.com -Dsonar.login=$SONAR_TOKEN
