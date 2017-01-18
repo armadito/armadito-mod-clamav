@@ -8,9 +8,11 @@ addons:
     - libglib2.0-dev
     - libmagic-dev
     - libxml2-dev
-    - libjson-c-dev
     - libmicrohttpd-dev
     - libcurl4-openssl-dev
+    - libjansson-dev
+    - libjansson4
+    - autoconf-archive
     - libclamav-dev
   coverity_scan:
     project:
