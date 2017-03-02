@@ -28,21 +28,18 @@ PKG_PROG_PKG_CONFIG
 
 # check for libarmadito
 PKG_CHECK_MODULES(LIBARMADITO, libarmadito, [HAVE_LIBARMADITO=yes], [HAVE_LIBARMADITO=no])
+# check for libarmadito/armadito.h in source tree
 if test "$HAVE_LIBARMADITO" = "no"; then
-   AC_MSG_ERROR("cannot find ARMADITO library")
+   OLD_CPPFLAGS="$CPPFLAGS"
+   CPPFLAGS=-I$srcdir/../../armadito-core/libmodule/include
+   AC_CHECK_HEADER([libarmadito/armadito.h], [], [AC_MSG_ERROR([cannot find Armadito module library])], [])
+   CPPFLAGS="$OLD_CPPFLAGS"
+   LIBARMADITO_CFLAGS='-I$(top_srcdir)/../../armadito-core/libmodule/include'
+   AC_SUBST([LIBARMADITO_CFLAGS])
 fi
 
 # check for libclamav
-PKG_CHECK_MODULES(LIBCLAMAV, libclamav, [HAVE_LIBCLAMAV=yes], [HAVE_LIBCLAMAV=no])
-if test "$HAVE_LIBCLAMAV" = "no"; then
-   AC_MSG_ERROR("cannot find ClamAV library")
-fi
-
-# check for glib
-#PKG_CHECK_MODULES(GLIB2, glib-2.0, [HAVE_GLIB2=yes], [HAVE_GLIB2=no])
-#if test "$HAVE_GLIB2" = "no"; then
-#   AC_MSG_ERROR("cannot find glib-2.0 library")
-#fi
+PKG_CHECK_MODULES(LIBCLAMAV, libclamav, [], [AC_MSG_ERROR([cannot find ClamAV library])])
 
 # Output files
 AC_CONFIG_FILES([
