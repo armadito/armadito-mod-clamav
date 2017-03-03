@@ -61,7 +61,7 @@ static enum a6o_mod_status clamav_init(struct a6o_module *module)
 	cl_data->clamav_engine = cl_engine_new();
 	if(!cl_data->clamav_engine) {
 		free(cl_data);
-		a6o_log(A6O_LOG_MODULE, A6O_LOG_LEVEL_ERROR, "ClamAV: can't create new engine");
+		a6o_log(A6O_LOG_MODULE, A6O_LOG_LEVEL_WARNING, "ClamAV: can't create new engine");
 		return A6O_MOD_INIT_ERROR;
 	}
 
@@ -136,7 +136,7 @@ static enum a6o_mod_status clamav_post_init(struct a6o_module *module)
 
 	if (cl_data->tmp_dir != NULL) {
 		if ((ret = cl_engine_set_str(cl_data->clamav_engine, CL_ENGINE_TMPDIR, cl_data->tmp_dir)) != CL_SUCCESS) {
-			a6o_log(A6O_LOG_MODULE, A6O_LOG_LEVEL_ERROR, "ClamAV: error setting temporary directory: %s", cl_strerror(ret));
+			a6o_log(A6O_LOG_MODULE, A6O_LOG_LEVEL_WARNING, "ClamAV: error setting temporary directory: %s", cl_strerror(ret));
 			cl_engine_free(cl_data->clamav_engine);
 			cl_data->clamav_engine = NULL;
 			return A6O_MOD_INIT_ERROR;
@@ -144,7 +144,7 @@ static enum a6o_mod_status clamav_post_init(struct a6o_module *module)
 	}
 
 	if ((ret = cl_load(cl_data->db_dir, cl_data->clamav_engine, &signature_count, CL_DB_STDOPT)) != CL_SUCCESS) {
-		a6o_log(A6O_LOG_MODULE, A6O_LOG_LEVEL_ERROR, "ClamAV: error loading databases: %s", cl_strerror(ret));
+		a6o_log(A6O_LOG_MODULE, A6O_LOG_LEVEL_WARNING, "ClamAV: error loading databases: %s", cl_strerror(ret));
 		cl_engine_free(cl_data->clamav_engine);
 		cl_data->clamav_engine = NULL;
 		return A6O_MOD_INIT_ERROR;
@@ -153,7 +153,7 @@ static enum a6o_mod_status clamav_post_init(struct a6o_module *module)
 	a6o_log(A6O_LOG_MODULE, A6O_LOG_LEVEL_INFO, "ClamAV database loaded from %s, %d signatures", cl_data->db_dir, signature_count);
 
 	if ((ret = cl_engine_compile(cl_data->clamav_engine)) != CL_SUCCESS) {
-		a6o_log(A6O_LOG_MODULE, A6O_LOG_LEVEL_ERROR, "ClamAV: engine compilation error: %s", cl_strerror(ret));;
+		a6o_log(A6O_LOG_MODULE, A6O_LOG_LEVEL_WARNING, "ClamAV: engine compilation error: %s", cl_strerror(ret));;
 		cl_engine_free(cl_data->clamav_engine);
 		cl_data->clamav_engine = NULL;
 		return A6O_MOD_INIT_ERROR;
@@ -191,7 +191,7 @@ static enum a6o_mod_status clamav_close(struct a6o_module *module)
 	int ret;
 
 	if ((ret = cl_engine_free(cl_data->clamav_engine)) != CL_SUCCESS) {
-		a6o_log(A6O_LOG_MODULE, A6O_LOG_LEVEL_ERROR, "ClamAV: can't free engine");
+		a6o_log(A6O_LOG_MODULE, A6O_LOG_LEVEL_WARNING, "ClamAV: can't free engine");
 		return A6O_MOD_CLOSE_ERROR;
 	}
 
