@@ -11,7 +11,7 @@
 #tmpdir="@localstatedir@/lib/armadito/tmp"
 
 # default signatures databases directory
-#dbdir=/var/lib/armadito/bases/clamav
+#dbdir=/var/lib/clamav
 
 # number of days after which the module will be considered 'late'
 #late_days = 3

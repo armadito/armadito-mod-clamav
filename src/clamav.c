@@ -48,7 +48,6 @@ static enum a6o_mod_status clamav_init(struct a6o_module *module)
 	struct clamav_data *cl_data;
 	int ret;
 	const char *bases_location;
-	char *db_dir;
 	size_t len;
 
 	if ((ret = cl_init(CL_INIT_DEFAULT)) != CL_SUCCESS) {
@@ -65,18 +64,7 @@ static enum a6o_mod_status clamav_init(struct a6o_module *module)
 		return A6O_MOD_INIT_ERROR;
 	}
 
-	bases_location = a6o_std_path(A6O_LOCATION_BASES);
-	len = strlen(bases_location) + 1 + strlen("clamav") +1 ;
-	db_dir = calloc(len+1,sizeof(char));
-	db_dir[len] = '\0';
-#ifdef _WIN32
-	os_sprintf(db_dir,len, "%s%cclamav", bases_location, a6o_path_sep());
-#else
-	sprintf(db_dir, "%s%cclamav", bases_location, a6o_path_sep());
-#endif
-	free((void*)bases_location);
-
-	cl_data->db_dir = db_dir;
+	cl_data->db_dir = NULL;
 	cl_data->tmp_dir = NULL;
 	cl_data->late_days = DEFAULT_LATE_DAYS;
 	cl_data->critical_days = DEFAULT_CRITICAL_DAYS;
@@ -133,6 +121,7 @@ static enum a6o_mod_status clamav_post_init(struct a6o_module *module)
 	struct clamav_data *cl_data = (struct clamav_data *)module->data;
 	int ret;
 	unsigned int signature_count = 0;
+	const char *db_dir;
 
 	if (cl_data->tmp_dir != NULL) {
 		if ((ret = cl_engine_set_str(cl_data->clamav_engine, CL_ENGINE_TMPDIR, cl_data->tmp_dir)) != CL_SUCCESS) {
@@ -143,14 +132,18 @@ static enum a6o_mod_status clamav_post_init(struct a6o_module *module)
 		}
 	}
 
-	if ((ret = cl_load(cl_data->db_dir, cl_data->clamav_engine, &signature_count, CL_DB_STDOPT)) != CL_SUCCESS) {
+	db_dir = cl_data->db_dir;
+	if (db_dir == NULL)
+		db_dir = cl_retdbdir();
+
+	if ((ret = cl_load(db_dir, cl_data->clamav_engine, &signature_count, CL_DB_STDOPT)) != CL_SUCCESS) {
 		a6o_log(A6O_LOG_MODULE, A6O_LOG_LEVEL_WARNING, "ClamAV: error loading databases: %s", cl_strerror(ret));
 		cl_engine_free(cl_data->clamav_engine);
 		cl_data->clamav_engine = NULL;
 		return A6O_MOD_INIT_ERROR;
 	}
 
-	a6o_log(A6O_LOG_MODULE, A6O_LOG_LEVEL_INFO, "ClamAV database loaded from %s, %d signatures", cl_data->db_dir, signature_count);
+	a6o_log(A6O_LOG_MODULE, A6O_LOG_LEVEL_INFO, "ClamAV database loaded from %s, %d signatures", db_dir, signature_count);
 
 	if ((ret = cl_engine_compile(cl_data->clamav_engine)) != CL_SUCCESS) {
 		a6o_log(A6O_LOG_MODULE, A6O_LOG_LEVEL_WARNING, "ClamAV: engine compilation error: %s", cl_strerror(ret));;
