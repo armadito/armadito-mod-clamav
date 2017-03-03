@@ -21,6 +21,8 @@ along with Armadito module clamav.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <libarmadito/armadito.h>
 
+#include "os/osdeps.h"
+
 #include <assert.h>
 #include <clamav.h>
 #include <stdio.h>
@@ -121,7 +123,6 @@ static enum a6o_mod_status clamav_post_init(struct a6o_module *module)
 	struct clamav_data *cl_data = (struct clamav_data *)module->data;
 	int ret;
 	unsigned int signature_count = 0;
-	const char *db_dir;
 
 	if (cl_data->tmp_dir != NULL) {
 		if ((ret = cl_engine_set_str(cl_data->clamav_engine, CL_ENGINE_TMPDIR, cl_data->tmp_dir)) != CL_SUCCESS) {
@@ -132,18 +133,17 @@ static enum a6o_mod_status clamav_post_init(struct a6o_module *module)
 		}
 	}
 
-	db_dir = cl_data->db_dir;
-	if (db_dir == NULL)
-		db_dir = cl_retdbdir();
+	if (cl_data->db_dir == NULL)
+		cl_data->db_dir = os_strdup(cl_retdbdir());
 
-	if ((ret = cl_load(db_dir, cl_data->clamav_engine, &signature_count, CL_DB_STDOPT)) != CL_SUCCESS) {
+	if ((ret = cl_load(cl_data->db_dir, cl_data->clamav_engine, &signature_count, CL_DB_STDOPT)) != CL_SUCCESS) {
 		a6o_log(A6O_LOG_MODULE, A6O_LOG_LEVEL_WARNING, "ClamAV: error loading databases: %s", cl_strerror(ret));
 		cl_engine_free(cl_data->clamav_engine);
 		cl_data->clamav_engine = NULL;
 		return A6O_MOD_INIT_ERROR;
 	}
 
-	a6o_log(A6O_LOG_MODULE, A6O_LOG_LEVEL_INFO, "ClamAV database loaded from %s, %d signatures", db_dir, signature_count);
+	a6o_log(A6O_LOG_MODULE, A6O_LOG_LEVEL_INFO, "ClamAV database loaded from %s, %d signatures", cl_data->db_dir, signature_count);
 
 	if ((ret = cl_engine_compile(cl_data->clamav_engine)) != CL_SUCCESS) {
 		a6o_log(A6O_LOG_MODULE, A6O_LOG_LEVEL_WARNING, "ClamAV: engine compilation error: %s", cl_strerror(ret));;
@@ -196,8 +196,6 @@ static enum a6o_mod_status clamav_close(struct a6o_module *module)
 	return A6O_MOD_OK;
 }
 
-/* under re-implementation */
-
 int get_late_days(time_t date)
 {
 	int late_days;
@@ -205,7 +203,7 @@ int get_late_days(time_t date)
 	double diffsec;
 
 	time(&now);
-	diffsec = difftime(now,date);
+	diffsec = difftime(now, date);
 	late_days = (diffsec / (double)86400);
 
 	return late_days;
@@ -245,12 +243,14 @@ static int get_year(int year){
 }
 
 
-time_t get_timestamp(char * cvd_time) {
-
+time_t get_timestamp(char * cvd_time)
+{
 	time_t cvd_timestamp = (time_t)-1;
 	struct tm timeptr = {0};
-	char s_month[4] = {0}, s_timezone[6] = {0};
-	char tmpbuf[128] = {'\0'}, timebuf[26] = {0};
+	char s_month[4] = {0};
+	char s_timezone[6] = {0};
+	char tmpbuf[128] = {'\0'};
+	char timebuf[26] = {0};
 	int year = 0;
 
 #ifdef _WIN32
@@ -288,20 +288,17 @@ static enum a6o_update_status clamav_info(struct a6o_module *module, struct a6o_
 
 	base_info_count = 0;
 	for (i = 0; i < n; i++) {
-		char *fullpath, *version;
+		char *full_path;
+		char *version;
 		struct a6o_base_info *base_info;
 		struct cl_cvd *cvd;
 
-		fullpath = get_db_module_path(dbnames[i], "clamav");
-		if (fullpath == NULL) {
-			a6o_log(A6O_LOG_MODULE, A6O_LOG_LEVEL_ERROR, "can't get module complete file path for db %s", dbnames[i]);
-			continue;
-		}
+		full_path = a6o_strcat(cl_data->db_dir, a6o_path_sep(), dbnames[i]);
 
-		cvd = cl_cvdhead(fullpath);
+		cvd = cl_cvdhead(full_path);
 		if (cvd == NULL) {
-			a6o_log(A6O_LOG_MODULE, A6O_LOG_LEVEL_WARNING, "clamav_info :: can't open cvd file! :: file = [%s]",fullpath);
-			free(fullpath);
+			a6o_log(A6O_LOG_MODULE, A6O_LOG_LEVEL_WARNING, "clamav_info :: can't open cvd file! :: file = [%s]",full_path);
+			free(full_path);
 			continue;
 		}
 
@@ -313,7 +310,7 @@ static enum a6o_update_status clamav_info(struct a6o_module *module, struct a6o_
 		sprintf(version, "%d", cvd->version);
 		base_info->version = version;
 		base_info->signature_count = cvd->sigs;
-		base_info->full_path = os_strdup(fullpath);
+		base_info->full_path = full_path;
 
 		a6o_log(A6O_LOG_MODULE, A6O_LOG_LEVEL_DEBUG, "clamav_info :: name = %s", base_info->name);
 		a6o_log(A6O_LOG_MODULE, A6O_LOG_LEVEL_DEBUG, "clamav_info :: fullpath = %s", base_info->full_path);
